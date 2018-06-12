@@ -39,6 +39,7 @@ driver.get(url)
 body = WebDriverWait(driver, 10).until(EC.presence_of_element_located(((By.TAG_NAME, "body"))))
 data = body.get_attribute("innerHTML")
 print(data)"""
+threshold = 5
 with contextlib.closing(urlopen(url)) as page:
     data = page.read()
 print(data)

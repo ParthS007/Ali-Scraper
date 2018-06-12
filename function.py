@@ -69,13 +69,13 @@ def get_items(url):
     while i > 0:
         try:
             items_on_page = get_items_on_page(i)
-            print("Sleeping for a 15 seconds...\n")
-            time.sleep(15)
+            print("Sleeping for a 25 seconds...\n")
+            time.sleep(25)
             i -= 1
         except Exception as e:
             print(e)
-            print("Sleeping for a 90 seconds...\n")
-            time.sleep(90)
+            print("Sleeping for a 150 seconds...\n")
+            time.sleep(150)
             continue
 
         for id in items_on_page:
@@ -95,7 +95,10 @@ def put_items(sheet, items):
         cell_range[j+2].value = item['price']
         cell_range[j+3].value = item['link']
         cell_range[j+4].value = item['orders']
-        j += 5
+        cell_range[j+5].value = item['prev_orders']
+        cell_range[j+6].value = item['delta']
+        cell_range[j+7].value = item['interesting']
+        j += 8
         #cell_range[i:i+len(item)] = [id, item['name'], item['price'], item['link'], item['orders']]
 
     sheet.update_cells(cell_range)
@@ -150,3 +153,18 @@ def send_msg(items):
     sendSvr.quit()
     assert len(errs) == 0, errs
     print("Email sent!")
+
+def next_available_row(worksheet):
+    str_list = filter(None, worksheet.col_values(1))  # fastest
+    return len(str_list)
+
+def range_to_items(items_range):
+    matrix = [[] for _ in range(items_range[-1].row-1)]
+    for cell in items_range:
+        matrix[cell.row-2].append(cell)
+    items_orders = {}
+    for item_row in matrix:
+        id = int(item_row[0].value)
+        orders = int(item_row[4].value)
+        items_orders[id] = orders
+    return items_orders
