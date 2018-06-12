@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "cultivated-card-206814",
+  "private_key_id": "83d1fa8875c2d9d13cbc1f4fced165717acb6f20",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQClOtcR5F2xYHNx\nJHIXj5oZ7iYiiCDCdSW9fzxhUaSchnO3QIvMVDbeK3N/2uPJnzRNxLBt39jMaHL0\nWHMqoEDZ51pL3u2zzhF3YgldiIGZ6IC9ZX5knGbK/4Ba2Z7h5YZXIMmpBoMvqiTl\nHakoly7rr3jCagcf5p7+m2aYnpk3W+Nis2b94hvdjmdNin7mRL7kJ9k9UIYvLmlE\ntmQ2/DOzzH0WRrDDBeefERVNAYcj+2pIxvNJUBBdtcczvHvPBh4rV9OFo6RgO8m8\nSd9f/b4A8+6P+kR5usAE0J0Q11eGSQ78UFxpmSeOtpA1cJb43u6V6+pkf8qP9wzS\n+xsJrtXHAgMBAAECggEAKZNJK6jdRHUjByynArOxEGZCtTywlY2ZnfmGjWxYMcSJ\nGGrG4nasSbIAQYMn/wMuy4S66iLBsAl2J3KcI/Un7EyRBXdGM5CeB36lIaJoDfyZ\nbE6+A33xRZINz45jsq6o44KOC5hmaRd0aixQ9LQ567b++Vhpi4bhqeobYjrCDdIL\nJ/38T0JitkQPdVxqH48+Y8myKnd9I19SikzSXOkXYRCFJ0Y1lS4NENvcEk/LO0rm\nka8AoXWgdx7yPbrlthw8UI+dMbMo0H7dCi+JGOAsPPK+sW+h41vduSqK5aM8L/q1\nxKBGISJ3H0RTTeRF9d355CsKbITN/OfbMGPm/+axfQKBgQDWqIxCBB8sNHDRLpYe\nFMQ4c8nIJDiWRghloKSl8fFJhoehHkfYUPnxMqzvhevfDEaDSF30CtfDhrja8owT\nqmpupP5L2awXus5/ox9iP6LJUCXN7RHTIQH6OGXl/sLM0GQ6CLQafLXqphufDD6a\npsD+FLlx3apnqW/E7vrPT0OVYwKBgQDFDUg+r/7n+0nBuLcE/GujZgzkXOKCZfCD\nBZv7lBeN/A8meNb9VxhG8sDbx4lxPqGZrL/tVG65E+Hxs2vDmmHp9ewmqiMt/FP4\nF28R3zBRMGXfjnsh8uE6Jqt3Edxg3qlm23hCzcqa31CckRjG3IPj0bq7aUugHdHl\nWP897C2tTQKBgQCT2OU59wLNfJUTzsWAlIcN5tpdKm17O2M/NCUTUxAAt1MlaujL\nGgL82Q15sEDkkNzkQWzM0McJmfoqe5J1XRQPfz7TWWqJsZXXHbBZCEGD7NsM+bMk\nOwDUqhGtFwpu7T2LJ0F9WNYndx9hLZrVA/O7TOTpg2aCHZapCnzfWtXOxwKBgQC2\nYpPSye1C5JihAIoNyGEMbSFToRFaJmZVrzRvx+OBXKLdNg2vkRR8XqXZBrgVJCZI\n6db/IR4WmeuQXkRJWLR161Q3eVR0dM93mqEIRq8fBo/UOrmHc5m5zB76Z4K1+oGL\nHWoTUwzLChU/xSDMt0Av9mhCnLQNsGwdPqGIu/iPJQKBgCjjw4hiH3+54nz5djkm\nrA4PSYyXQon4rb2R666k7CfhgM2xkBiM+CFI/dozWCnfphBO/g0XSSBLDb5s9U4x\nL73kiWc2b90JGIVxruzzbAe+o9FFNGw56hB/L2UFZs17+PpTwHRUnQbmd+IkpqS6\nTdKWjecl0EkSpJoUlF0cclns\n-----END PRIVATE KEY-----\n",
+  "client_email": "ali-scraper@cultivated-card-206814.iam.gserviceaccount.com",
+  "client_id": "103945658910218455913",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/ali-scraper%40cultivated-card-206814.iam.gserviceaccount.com"
+}
