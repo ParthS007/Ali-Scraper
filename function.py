@@ -6,16 +6,11 @@ from socket import gaierror
 import time
 from urllib.request import urlopen
 from bs4 import BeautifulSoup as BS
-import requests
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
 from __init__ import Soup, url, max_orders
 
 price_patt = re.compile(r'.*\$(.*)')
 orders_patt = re.compile(r'.*\((.*)\)')
+
 
 def get_end_page(Soup):
     totalResult = Soup.find('strong', {'class': 'search-count'})
@@ -25,6 +20,7 @@ def get_end_page(Soup):
     elif ( results > 0 and results < 4800):
         endPage = math.ceil((results/4800))
     return endPage
+
 
 def get_items_on_page(page_no):
     print("Page: " + str(page_no))
@@ -60,10 +56,10 @@ def get_items_on_page(page_no):
 
     return items
 
+
 def get_items(url):
     count = 2
     endPage = get_end_page(Soup)
-    print(endPage)
     items = {}
     i = endPage
     while i > 0:
@@ -80,13 +76,13 @@ def get_items(url):
 
         for id in items_on_page:
             items[id] = items_on_page[id]
-        # put_items(items_on_page, count)
         count += len(items_on_page)
     return items
 
-def put_items(sheet, items):
+
+def put_items(sheet, items, diff):
     items_array = []
-    cell_range = sheet.range("A%d:E%d" % (1, len(items)))
+    cell_range = sheet.range("A%d:H%d" % (2, len(items)+1))
     j = 0
     for i, id in enumerate(items.keys()):
         item = items[id]
@@ -99,21 +95,22 @@ def put_items(sheet, items):
         cell_range[j+6].value = item['delta']
         cell_range[j+7].value = item['interesting']
         j += 8
-        #cell_range[i:i+len(item)] = [id, item['name'], item['price'], item['link'], item['orders']]
+    if diff > 0:
+        last_row = len(items) + 1
+        blank_range = sheet.range("A%d:H%d" % (last_row+1, last_row+diff))
+        for cell in blank_range:
+            cell.value = None
+        sheet.update_cells(blank_range)
 
     sheet.update_cells(cell_range)
-    # var column = source.getRange("D"+startRow+":D"+(startRow+keys.length-1));
-    # column.setFormula('=HYPERLINK(D2:D, "link")');
+
 
 def send_msg(items):
     #reply to thread or post an article in the newsgroup
     SMTPSVR = 'smtp.gmail.com'
     who = 'samchats333@gmail.com'
-    msg = """
-    From: Sam Chats <samchats333@gmail.com>
-    To: Nate Schmidt <nws@nateschmidt.io>
-    Subject: Hot items
-
+    msg = \
+    """Subject: Hot items
 
     Hello Nat,
     Here are some interesting items:
@@ -124,26 +121,22 @@ def send_msg(items):
         msg.write('Newsgroups: %s\n' % group_name)
         msg.write('Subject: %s\n' % subject)
     subprocess.call(['nano', 'message'])"""
-
     recipients = ['parth1989shandilya@gmail.com']
     item_list = []
-
     for id in items:
-        item_list.append("{name} - {link} - increased by {delta}".format(name=items[id]['name'], link=items[id]['link'], delta=items[id]['delta']))
-    msg += '\n'.join(item_list)
+        item_list.append("{name} - {link} - increased by {delta} (From {prev_orders} to {orders})".format(name=items[id]['name'], link=items[id]['link'], delta=items[id]['delta'], prev_orders=items[id]['prev_orders'], orders=items[id]['orders']))
+    msg += '\n\n'.join(item_list)
     msg += """
 
     Regards,
     SamChatsBot
     """
-
     try:
         sendSvr = SMTP_SSL(SMTPSVR, 465)
     except gaierror:
         print("Can't connect to %s." % SMTPSVR)
         exit()
     sendSvr.ehlo()
-    #sendSvr.starttls()
     try:
         sendSvr.login('samchats333@gmail.com', 'Parth@1989')
     except SMTPAuthenticationError:
@@ -154,9 +147,11 @@ def send_msg(items):
     assert len(errs) == 0, errs
     print("Email sent!")
 
+
 def next_available_row(worksheet):
-    str_list = filter(None, worksheet.col_values(1))  # fastest
+    str_list = list(filter(None, worksheet.col_values(1)))  # fastest but perhaps stupid :)
     return len(str_list)
+
 
 def range_to_items(items_range):
     matrix = [[] for _ in range(items_range[-1].row-1)]
