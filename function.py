@@ -6,7 +6,7 @@ from socket import gaierror
 import time
 from urllib.request import urlopen
 from bs4 import BeautifulSoup as BS
-from __init__ import Soup, url, max_orders
+from __init__ import max_orders
 
 price_patt = re.compile(r'.*\$(.*)')
 orders_patt = re.compile(r'.*\((.*)\)')
@@ -22,7 +22,7 @@ def get_end_page(Soup):
     return endPage
 
 
-def get_items_on_page(page_no):
+def get_items_on_page(url, page_no):
     print("Page: " + str(page_no))
     headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Cafari/537.36'}
     with contextlib.closing(urlopen(url+"&page="+str(page_no))) as page:
@@ -57,14 +57,20 @@ def get_items_on_page(page_no):
     return items
 
 
-def get_items(url):
+def get_items(query):
+    base_url = "https://www.aliexpress.com/wholesale?SortType=total_tranpro_desc"
+    url = base_url + "&SearchText=" + "+".join(query.split(" "))
     count = 2
+
+    with contextlib.closing(urlopen(url)) as page:
+        data = page.read()
+    Soup = BS(data, "lxml")
     endPage = get_end_page(Soup)
     items = {}
     i = endPage
     while i > 0:
         try:
-            items_on_page = get_items_on_page(i)
+            items_on_page = get_items_on_page(url, i)
             print("Sleeping for a 25 seconds...\n")
             time.sleep(25)
             i -= 1
@@ -105,17 +111,17 @@ def put_items(sheet, items, diff):
     sheet.update_cells(cell_range)
 
 
-def send_msg(items):
+def send_msg(items, item_name):
     #reply to thread or post an article in the newsgroup
     SMTPSVR = 'smtp.gmail.com'
     who = 'samchats333@gmail.com'
     msg = \
-    """Subject: Hot items
+    """Subject: Hot items: {item_name}
 
     Hello Nat,
     Here are some interesting items:
 
-    """
+    """.format(item_name=item_name)
     """with open('message', 'w') as msg:
         msg.write('From: YOUR_NAME_HERE <blahBlah@blah.org>\n')
         msg.write('Newsgroups: %s\n' % group_name)
