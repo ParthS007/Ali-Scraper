@@ -12,8 +12,16 @@ price_patt = re.compile(r'.*\$(.*)')
 orders_patt = re.compile(r'.*\((.*)\)')
 
 
-def get_end_page(Soup):
-    totalResult = Soup.find('strong', {'class': 'search-count'})
+def get_end_page(url):
+    totalResult = None
+    while totalResult is None:
+        with contextlib.closing(urlopen(url)) as page:
+            data = page.read()
+        Soup = BS(data, "lxml")
+        totalResult = Soup.find('strong', {'class': 'search-count'})
+        print("Sleeping for 25 seconds for end page")
+        time.sleep(25)
+
     results = int(totalResult.text.replace(',', ''))
     if (results >= 4800):
         endPage = 100
@@ -62,13 +70,10 @@ def get_items(query):
     url = base_url + "&SearchText=" + "+".join(query.split(" "))
     count = 2
 
-    with contextlib.closing(urlopen(url)) as page:
-        data = page.read()
-    Soup = BS(data, "lxml")
-    endPage = get_end_page(Soup)
+    endPage = get_end_page(url)
     items = {}
     i = endPage
-    while i > 0:
+    while i > 0:  ## CHANGE
         try:
             items_on_page = get_items_on_page(url, i)
             print("Sleeping for a 25 seconds...\n")
