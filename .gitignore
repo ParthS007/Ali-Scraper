@@ -1,3 +1,4 @@
 .vscode/
 function.pyc
 __pycache__/
+nohup.out
