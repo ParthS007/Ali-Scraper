@@ -59,10 +59,6 @@ def main_search(sheet, query):
     function.put_items(sheet, items, product_num_difference)
     print("Done for sheet {name}".format(name=sheet.title))
 
-file = gspread.authorize(credentials)
-sheet_file = file.open("Ali_Express")
-sheets = sheet_file.worksheets()
-
 sleep_time = 0
 while True:
     for i in range(sleep_time):  # chunks of 10 minutes
@@ -73,11 +69,15 @@ while True:
 
     file = gspread.authorize(credentials)
     sheet_file = file.open("Ali_Express")
-    sheets = sheet_file.worksheets()
-    for sheet in sheets:
-        query = sheet.title
+    sheet_names = [sheet.title for sheet in sheet_file.worksheets()]
+    for query in sheet_names:
+        sheet = sheet_file.worksheet(query)  # query is the sheet name
         print("Product: {query}".format(query=query))
+
         main_search(sheet, query)
+
+        file = gspread.authorize(credentials)
+        sheet_file = file.open("Ali_Express")
 
     end = datetime.datetime.now()
     seconds = (end - start).seconds

@@ -26,7 +26,7 @@ def get_end_page(url):
     if (results >= 4800):
         endPage = 100
     elif ( results > 0 and results < 4800):
-        endPage = math.ceil((results/4800))
+        endPage = math.ceil((results/48))
     return endPage
 
 
@@ -132,7 +132,7 @@ def send_msg(items, item_name):
         msg.write('Newsgroups: %s\n' % group_name)
         msg.write('Subject: %s\n' % subject)
     subprocess.call(['nano', 'message'])"""
-    recipients = ['parth1989shandilya@gmail.com']
+    recipients = ['parth1989shandilya@gmail.com', 'nws@nateschmidt.io']
     item_list = []
     for id in items:
         item_list.append("{name} - {link} - increased by {delta} (From {prev_orders} to {orders})".format(name=items[id]['name'], link=items[id]['link'], delta=items[id]['delta'], prev_orders=items[id]['prev_orders'], orders=items[id]['orders']))
