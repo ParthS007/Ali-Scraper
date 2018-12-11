@@ -119,7 +119,7 @@ def put_items(sheet, items, diff):
 def send_msg(items, item_name):
     #reply to thread or post an article in the newsgroup
     SMTPSVR = 'smtp.gmail.com'
-    who = 'samchats333@gmail.com'
+    who = 'xxxxxxxxxxx3@gmail.com'
     msg = \
     """Subject: Hot items: {item_name}
 
@@ -132,7 +132,7 @@ def send_msg(items, item_name):
         msg.write('Newsgroups: %s\n' % group_name)
         msg.write('Subject: %s\n' % subject)
     subprocess.call(['nano', 'message'])"""
-    recipients = ['parth1989shandilya@gmail.com', 'nws@nateschmidt.io']
+    recipients = ['xxxxxxxxxxx@gmail.com'] # Add Reciepent Mail
     item_list = []
     for id in items:
         item_list.append("{name} - {link} - increased by {delta} (From {prev_orders} to {orders})".format(name=items[id]['name'], link=items[id]['link'], delta=items[id]['delta'], prev_orders=items[id]['prev_orders'], orders=items[id]['orders']))
@@ -140,7 +140,7 @@ def send_msg(items, item_name):
     msg += """
 
     Regards,
-    SamChatsBot
+    Ali-Scraper
     """
     try:
         sendSvr = SMTP_SSL(SMTPSVR, 465)
@@ -149,7 +149,7 @@ def send_msg(items, item_name):
         exit()
     sendSvr.ehlo()
     try:
-        sendSvr.login('samchats333@gmail.com', 'Parth@1989')
+        sendSvr.login('xxxxx@gmail.com', 'xxxxxx') #Add Your Email ID and Password
     except SMTPAuthenticationError:
         print("Invalid SMTP credentials.")
         exit()

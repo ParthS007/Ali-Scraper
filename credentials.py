@@ -1,3 +1,3 @@
-SHEETS_API_KEY = "AIzaSyBn5guU5bxW0lrjsobbNCeL2EDu-DeS5SQ"
+SHEETS_API_KEY = "xxxxxxxxxxx"
 # email id
 # email password
