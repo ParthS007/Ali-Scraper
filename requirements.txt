@@ -6,7 +6,7 @@ cachetools==2.1.0
 certifi==2018.4.16
 cffi==1.11.5
 chardet==3.0.4
-cryptography==2.2.2
+cryptography>=2.3
 google-api-python-client==1.7.3
 google-auth==1.5.0
 google-auth-httplib2==0.0.3
@@ -24,11 +24,11 @@ pyasn1-modules==0.2.1
 pycparser==2.18
 pylint==1.9.2
 pyOpenSSL==18.0.0
-requests==2.18.4
+requests>=2.20.0
 rsa==3.4.2
 selenium==3.12.0
 six==1.11.0
 uritemplate==3.0.0
-urllib3==1.22
+urllib3>=1.23
 webencodings==0.5.1
 wrapt==1.10.11
