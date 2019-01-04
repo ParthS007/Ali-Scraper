@@ -1,6 +1,11 @@
 # Ali Scraper
 
+![Ali Scraper](/other/Scraper-artwork.png)
 A scraper which scraps Ali Express and get the product details in a Google spreadsheet.
+
+[![Build Status](https://travis-ci.org/ParthS007/Ali-Scraper.svg?branch=development)](https://travis-ci.org/ParthS007/Ali-Scraper)
+![Lines of code](https://tokei.rs/b1/github/ParthS007/Ali-Scraper)
+[![HitCount](http://hits.dwyl.io/ParthS007/Ali-Scraper.svg)](http://hits.dwyl.io/ParthS007/Ali-Scraper)
 
 ## Technology
 
