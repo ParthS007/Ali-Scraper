@@ -56,6 +56,7 @@ def main_search(sheet, query):
     function.put_items(sheet, items, product_num_difference)
     print("Done for sheet {name}".format(name=sheet.title))
 
+
 sleep_time = 0
 while True:
     for i in range(sleep_time):  # chunks of 10 minutes
