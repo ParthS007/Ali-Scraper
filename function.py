@@ -6,7 +6,6 @@ from socket import gaierror
 import time
 from urllib.request import urlopen
 from bs4 import BeautifulSoup as BS
-from __init__ import max_orders
 
 price_patt = re.compile(r'.*\$(.*)')
 orders_patt = re.compile(r'.*\((.*)\)')
@@ -25,19 +24,20 @@ def get_end_page(url):
     results = int(totalResult.text.replace(',', ''))
     if (results >= 4800):
         endPage = 100
-    elif ( results > 0 and results < 4800):
-        endPage = math.ceil((results/48))
+    elif (results > 0 and results < 4800):
+        endPage = math.ceil((results / 48))
     return endPage
 
 
 def get_items_on_page(url, page_no):
     print("Page: " + str(page_no))
-    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Cafari/537.36'}
-    with contextlib.closing(urlopen(url+"&page="+str(page_no))) as page:
+    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5)\
+                AppleWebKit/537.36 (KHTML, like Gecko) Cafari/537.36'}
+    with contextlib.closing(urlopen(url + "&page=" + str(page_no))) as page:
         data = page.read()
     soup = BS(data, "lxml")
-    list_ele = soup.find('ul',{'id': 'hs-below-list-items'})
-    items_ele = list_ele.find_all('div', {'class':'item'})
+    list_ele = soup.find('ul', {'id': 'hs-below-list-items'})
+    items_ele = list_ele.find_all('div', {'class': 'item'})
     items = {}
 
     for i, ele in enumerate(items_ele):
@@ -66,14 +66,15 @@ def get_items_on_page(url, page_no):
 
 
 def get_items(query):
-    base_url = "https://www.aliexpress.com/wholesale?SortType=total_tranpro_desc"
+    base_url = "https://www.aliexpress.com/wholesale?\
+                SortType=total_tranpro_desc"
     url = base_url + "&SearchText=" + "+".join(query.split(" "))
     count = 2
 
     endPage = get_end_page(url)
     items = {}
     i = endPage
-    while i > 0:  ## CHANGE
+    while i > 0:  # CHANGE
         try:
             items_on_page = get_items_on_page(url, i)
             print("Sleeping for a 25 seconds...\n")
@@ -93,22 +94,22 @@ def get_items(query):
 
 def put_items(sheet, items, diff):
     items_array = []
-    cell_range = sheet.range("A%d:H%d" % (2, len(items)+1))
+    cell_range = sheet.range("A%d:H%d" % (2, len(items) + 1))
     j = 0
     for i, id in enumerate(items.keys()):
         item = items[id]
         cell_range[j].value = id
-        cell_range[j+1].value = item['name']
-        cell_range[j+2].value = item['price']
-        cell_range[j+3].value = item['link']
-        cell_range[j+4].value = item['orders']
-        cell_range[j+5].value = item['prev_orders']
-        cell_range[j+6].value = item['delta']
-        cell_range[j+7].value = item['interesting']
+        cell_range[j + 1].value = item['name']
+        cell_range[j + 2].value = item['price']
+        cell_range[j + 3].value = item['link']
+        cell_range[j + 4].value = item['orders']
+        cell_range[j + 5].value = item['prev_orders']
+        cell_range[j + 6].value = item['delta']
+        cell_range[j + 7].value = item['interesting']
         j += 8
     if diff > 0:
         last_row = len(items) + 1
-        blank_range = sheet.range("A%d:H%d" % (last_row+1, last_row+diff))
+        blank_range = sheet.range("A%d:H%d" % (last_row + 1, last_row + diff))
         for cell in blank_range:
             cell.value = None
         sheet.update_cells(blank_range)
@@ -117,25 +118,29 @@ def put_items(sheet, items, diff):
 
 
 def send_msg(items, item_name):
-    #reply to thread or post an article in the newsgroup
+    # reply to thread or post an article in the newsgroup
     SMTPSVR = 'smtp.gmail.com'
     who = 'xxxxxxxxxxx3@gmail.com'
-    msg = \
-    """Subject: Hot items: {item_name}
+    msg = """Subject: Hot items: {item_name}
+            Hello Nat,
+            Here are some interesting items:
 
-    Hello Nat,
-    Here are some interesting items:
-
-    """.format(item_name=item_name)
-    """with open('message', 'w') as msg:
+            """.format(item_name=item_name)
+    """
+    with open('message', 'w') as msg:
         msg.write('From: YOUR_NAME_HERE <blahBlah@blah.org>\n')
         msg.write('Newsgroups: %s\n' % group_name)
         msg.write('Subject: %s\n' % subject)
-    subprocess.call(['nano', 'message'])"""
-    recipients = ['xxxxxxxxxxx@gmail.com'] # Add Reciepent Mail
+    subprocess.call(['nano', 'message'])
+    """
+    recipients = ['xxxxxxxxxxx@gmail.com']  # Add Reciepent Mail
     item_list = []
     for id in items:
-        item_list.append("{name} - {link} - increased by {delta} (From {prev_orders} to {orders})".format(name=items[id]['name'], link=items[id]['link'], delta=items[id]['delta'], prev_orders=items[id]['prev_orders'], orders=items[id]['orders']))
+        item_list.append("{name} - {link} - increased by {delta}(From {prev_orders} to {orders})".format(name=items[id]['name'],
+                         link=items[id]['link'],
+                         delta=items[id]['delta'],
+                         prev_orders=items[id]['prev_orders'],
+                         orders=items[id]['orders']))
     msg += '\n\n'.join(item_list)
     msg += """
 
@@ -149,7 +154,7 @@ def send_msg(items, item_name):
         exit()
     sendSvr.ehlo()
     try:
-        sendSvr.login('xxxxx@gmail.com', 'xxxxxx') #Add Your Email ID and Password
+        sendSvr.login('xxxxx@gmail.com', 'xxxxxx')  # Add Your Email ID and Password
     except SMTPAuthenticationError:
         print("Invalid SMTP credentials.")
         exit()
@@ -165,9 +170,9 @@ def next_available_row(worksheet):
 
 
 def range_to_items(items_range):
-    matrix = [[] for _ in range(items_range[-1].row-1)]
+    matrix = [[] for _ in range(items_range[-1].row - 1)]
     for cell in items_range:
-        matrix[cell.row-2].append(cell)
+        matrix[cell.row - 2].append(cell)
     items_orders = {}
     for item_row in matrix:
         id = int(item_row[0].value)

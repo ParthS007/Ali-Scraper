@@ -1,11 +1,8 @@
 import datetime
-import json
-import os
 import time
 import gspread
 import function
 from __init__ import credentials, max_orders, threshold
-
 
 
 def main_search(sheet, query):
@@ -45,7 +42,7 @@ def main_search(sheet, query):
             items[id]['prev_orders'] = None
             items[id]['delta'] = None
             items[id]['interesting'] = None  # new item!
-    
+
     if interesting:
         function.send_msg(interesting, item_name=query)
     else:
