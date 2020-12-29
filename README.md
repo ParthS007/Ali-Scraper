@@ -4,8 +4,7 @@
 
 A scraper which scraps Ali Express and get the product details in a Google spreadsheet.
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/3ec870519f594986ab43b981cf010cb9)](https://app.codacy.com/app/ParthS007/Ali-Scraper?utm_source=github.com&utm_medium=referral&utm_content=ParthS007/Ali-Scraper&utm_campaign=Badge_Grade_Settings)
-[![Build Status](https://travis-ci.org/ParthS007/Ali-Scraper.svg?branch=development)](https://travis-ci.org/ParthS007/Ali-Scraper)
+[![Build Status](https://github.com/ParthS007/Ali-Scraper/workflows/CI/badge.svg)](https://github.com/ParthS007/Ali-Scraper/actions)
 ![Lines of code](https://tokei.rs/b1/github/ParthS007/Ali-Scraper)
 [![HitCount](http://hits.dwyl.io/ParthS007/Ali-Scraper.svg)](http://hits.dwyl.io/ParthS007/Ali-Scraper)
 
