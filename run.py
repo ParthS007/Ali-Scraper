@@ -30,18 +30,21 @@ def main_search(sheet, query):
     for id in items:
         prev_orders = prev_items_orders.get(id)
         if prev_orders is not None:
-            items[id]['prev_orders'] = prev_orders
-            items[id]['delta'] = items[id]['orders'] - items[id]['prev_orders']
+            items[id]["prev_orders"] = prev_orders
+            items[id]["delta"] = items[id]["orders"] - items[id]["prev_orders"]
 
-            if items[id]['delta'] >= threshold and items[id]['prev_orders'] <= max_orders:
+            if (
+                items[id]["delta"] >= threshold
+                and items[id]["prev_orders"] <= max_orders
+            ):
                 interesting[id] = items[id]
-                items[id]['interesting'] = True
+                items[id]["interesting"] = True
             else:
-                items[id]['interesting'] = False
+                items[id]["interesting"] = False
         else:
-            items[id]['prev_orders'] = None
-            items[id]['delta'] = None
-            items[id]['interesting'] = None  # new item!
+            items[id]["prev_orders"] = None
+            items[id]["delta"] = None
+            items[id]["interesting"] = None  # new item!
 
     if interesting:
         function.send_msg(interesting, item_name=query)
