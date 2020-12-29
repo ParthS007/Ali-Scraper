@@ -7,8 +7,8 @@ import time
 from urllib.request import urlopen
 from bs4 import BeautifulSoup as BS
 
-price_patt = re.compile(r'.*\$(.*)')
-orders_patt = re.compile(r'.*\((.*)\)')
+price_patt = re.compile(r".*\$(.*)")
+orders_patt = re.compile(r".*\((.*)\)")
 
 
 def get_end_page(url):
@@ -17,50 +17,45 @@ def get_end_page(url):
         with contextlib.closing(urlopen(url)) as page:
             data = page.read()
         Soup = BS(data, "lxml")
-        totalResult = Soup.find('strong', {'class': 'search-count'})
+        totalResult = Soup.find("strong", {"class": "search-count"})
         print("Sleeping for 25 seconds for end page")
         time.sleep(25)
 
-    results = int(totalResult.text.replace(',', ''))
-    if (results >= 4800):
+    results = int(totalResult.text.replace(",", ""))
+    if results >= 4800:
         endPage = 100
-    elif (results > 0 and results < 4800):
+    elif results > 0 and results < 4800:
         endPage = math.ceil((results / 48))
     return endPage
 
 
 def get_items_on_page(url, page_no):
     print("Page: " + str(page_no))
-    headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5)\
-                AppleWebKit/537.36 (KHTML, like Gecko) Cafari/537.36'}
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5)\
+                AppleWebKit/537.36 (KHTML, like Gecko) Cafari/537.36"
+    }
     with contextlib.closing(urlopen(url + "&page=" + str(page_no))) as page:
         data = page.read()
     soup = BS(data, "lxml")
-    list_ele = soup.find('ul', {'id': 'hs-below-list-items'})
-    items_ele = list_ele.find_all('div', {'class': 'item'})
+    list_ele = soup.find("ul", {"id": "hs-below-list-items"})
+    items_ele = list_ele.find_all("div", {"class": "item"})
     items = {}
 
     for i, ele in enumerate(items_ele):
-        info = ele.find('div', {'class': 'info'})
-        link_ele = info.find('a', {'class': 'history-item'})
-        link = link_ele['href']
+        info = ele.find("div", {"class": "info"})
+        link_ele = info.find("a", {"class": "history-item"})
+        link = link_ele["href"]
         name = link_ele.text.strip()
-        price_text = info.find('span', {'class': 'value'}).text
+        price_text = info.find("span", {"class": "value"}).text
         price = price_patt.search(price_text).groups()[0]
-        orders_ele = info.find('span', {'class': 'order-num'})
-        orders_string = orders_ele.find('em').text
-        orders_raw = orders_patt.search(
-            orders_string
-        ).groups()[0].replace(',', '')
+        orders_ele = info.find("span", {"class": "order-num"})
+        orders_string = orders_ele.find("em").text
+        orders_raw = orders_patt.search(orders_string).groups()[0].replace(",", "")
         orders = int(orders_raw)
         tokens = link.split("?")[0].split("/")
         id = int(tokens[-1].split(".")[0])
-        items[id] = {
-            "name": name,
-            "price": price,
-            "link": link,
-            "orders": orders
-        }
+        items[id] = {"name": name, "price": price, "link": link, "orders": orders}
 
     return items
 
@@ -99,13 +94,13 @@ def put_items(sheet, items, diff):
     for i, id in enumerate(items.keys()):
         item = items[id]
         cell_range[j].value = id
-        cell_range[j + 1].value = item['name']
-        cell_range[j + 2].value = item['price']
-        cell_range[j + 3].value = item['link']
-        cell_range[j + 4].value = item['orders']
-        cell_range[j + 5].value = item['prev_orders']
-        cell_range[j + 6].value = item['delta']
-        cell_range[j + 7].value = item['interesting']
+        cell_range[j + 1].value = item["name"]
+        cell_range[j + 2].value = item["price"]
+        cell_range[j + 3].value = item["link"]
+        cell_range[j + 4].value = item["orders"]
+        cell_range[j + 5].value = item["prev_orders"]
+        cell_range[j + 6].value = item["delta"]
+        cell_range[j + 7].value = item["interesting"]
         j += 8
     if diff > 0:
         last_row = len(items) + 1
@@ -119,13 +114,15 @@ def put_items(sheet, items, diff):
 
 def send_msg(items, item_name):
     # reply to thread or post an article in the newsgroup
-    SMTPSVR = 'smtp.gmail.com'
-    who = 'xxxxxxxxxxx3@gmail.com'
+    SMTPSVR = "smtp.gmail.com"
+    who = "xxxxxxxxxxx3@gmail.com"
     msg = """Subject: Hot items: {item_name}
             Hello Nat,
             Here are some interesting items:
 
-            """.format(item_name=item_name)
+            """.format(
+        item_name=item_name
+    )
     """
     with open('message', 'w') as msg:
         msg.write('From: YOUR_NAME_HERE <blahBlah@blah.org>\n')
@@ -133,15 +130,19 @@ def send_msg(items, item_name):
         msg.write('Subject: %s\n' % subject)
     subprocess.call(['nano', 'message'])
     """
-    recipients = ['xxxxxxxxxxx@gmail.com']  # Add Reciepent Mail
+    recipients = ["xxxxxxxxxxx@gmail.com"]  # Add Reciepent Mail
     item_list = []
     for id in items:
-        item_list.append("{name} - {link} - increased by {delta}(From {prev_orders} to {orders})".format(name=items[id]['name'],
-                         link=items[id]['link'],
-                         delta=items[id]['delta'],
-                         prev_orders=items[id]['prev_orders'],
-                         orders=items[id]['orders']))
-    msg += '\n\n'.join(item_list)
+        item_list.append(
+            "{name} - {link} - increased by {delta}(From {prev_orders} to {orders})".format(
+                name=items[id]["name"],
+                link=items[id]["link"],
+                delta=items[id]["delta"],
+                prev_orders=items[id]["prev_orders"],
+                orders=items[id]["orders"],
+            )
+        )
+    msg += "\n\n".join(item_list)
     msg += """
 
     Regards,
@@ -154,7 +155,7 @@ def send_msg(items, item_name):
         exit()
     sendSvr.ehlo()
     try:
-        sendSvr.login('xxxxx@gmail.com', 'xxxxxx')  # Add Your Email ID and Password
+        sendSvr.login("xxxxx@gmail.com", "xxxxxx")  # Add Your Email ID and Password
     except SMTPAuthenticationError:
         print("Invalid SMTP credentials.")
         exit()
@@ -165,7 +166,9 @@ def send_msg(items, item_name):
 
 
 def next_available_row(worksheet):
-    str_list = list(filter(None, worksheet.col_values(1)))  # fastest but perhaps stupid :)
+    str_list = list(
+        filter(None, worksheet.col_values(1))
+    )  # fastest but perhaps stupid :)
     return len(str_list)
 
 
