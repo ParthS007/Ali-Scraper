@@ -25,7 +25,7 @@ pycparser==2.20
 pylint==2.6.0
 pyOpenSSL==20.0.1
 requests>=2.25.1
-rsa==4.6
+rsa==4.7
 selenium==3.141.0
 six==1.15.0
 uritemplate==3.0.1
